@@ -12,6 +12,8 @@ const SCOPES = 'https://www.googleapis.com/auth/gmail.settings.basic';
 
 const authorizeButton = document.getElementById('authorize_button');
 const signoutButton = document.getElementById('signout_button');
+const autoresponderButton = document.getElementById('autoresponder_button');
+const resetAutoresponderButton = document.getElementById('reset_autoresponder_button');
 
 function handleClientLoad() {
   gapi.load('client:auth2', initClient);
@@ -30,12 +32,28 @@ function initClient() {
     updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
     authorizeButton.addEventListener('click', handleAuthClick);
     signoutButton.addEventListener('click', handleSignoutClick);
+    autoresponderButton.addEventListener('click', () => {
+      setVacationSetting({
+        'enableAutoReply': true,
+        'responseSubject': 'Topic',
+        'responseBodyHtml': 'HTML Message',
+        'restrictToContacts': false
+      });
+    });
+    resetAutoresponderButton.addEventListener('click', () => {
+      setVacationSetting({
+        'enableAutoReply': false
+      });
+    });
+
   }, error => console.error(error));
 }
 
 function updateSigninStatus(isSignedIn) {
   authorizeButton.style.display = isSignedIn ? 'none' : 'block';
   signoutButton.style.display = !isSignedIn ? 'none' : 'block';
+  autoresponderButton.style.display = !isSignedIn ? 'none' : 'block';
+  resetAutoresponderButton.style.display = !isSignedIn ? 'none' : 'block';
   if (isSignedIn) {
     getVacationSetting();
   }
@@ -55,6 +73,12 @@ const log = str => {
 
 const getVacationSetting = () => {
   gapi.client.gmail.users.settings.getVacation({userId: 'me'}).execute(res => {
+    log(JSON.stringify(res, null, '  '));
+  });
+};
+
+const setVacationSetting = config => {
+  gapi.client.gmail.users.settings.updateVacation({userId: 'me'}, config).execute(res => {
     log(JSON.stringify(res, null, '  '));
   });
 };
