@@ -1,7 +1,7 @@
 
 // Client ID and API key from the Developer Console
 const CLIENT_ID = '416306538306-l4r33seebcbat4mmlrobf8fp5ll56rbi.apps.googleusercontent.com';
-const API_KEY = 'AIzaSyC84J16v8gk9OFljKpgp57ljJMOUszZGZs';
+const API_KEY = 'AIzaSyC7iIOvCCPrSPF4L46bRpKEjDNylEccAM0';
 
 // Array of API discovery doc URLs for APIs used by the quickstart
 const DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/gmail/v1/rest"];
@@ -35,8 +35,10 @@ function initClient() {
     autoresponderButton.addEventListener('click', () => {
       setVacationSetting({
         'enableAutoReply': true,
-        'responseSubject': 'Topic',
-        'responseBodyHtml': 'HTML Message',
+        'responseSubject': 'Temat przykladowy',
+        'responseBodyHtml': `Wiadomosc
+          <b>Bold test</>
+        `,
         'restrictToContacts': false
       });
     });
